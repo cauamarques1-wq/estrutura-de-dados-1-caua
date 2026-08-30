@@ -137,29 +137,118 @@ func (l *lista) valorNaPosicao(posicaoProcurada int) (int, bool) {
 	return 0, false
 }
 
-func main() {
-	minhaLista := lista{}
+func (l *lista) tamanho() int {
+	atual := l.inicio
+	count := 0
+	for atual != nil {
+		count++
+		atual = atual.proximo
+	}
+	return count
+}
 
-	minhaLista.adicionarFim(10)
-	minhaLista.adicionarFim(20)
-	minhaLista.adicionarFim(30)
-	minhaLista.adicionarFim(40)
-
-	fmt.Println("lista atual:")
-	atual := minhaLista.inicio
+func (l *lista) imprimir() {
+	atual := l.inicio
 	for atual != nil {
 		fmt.Print(atual.valor, " -> ")
 		atual = atual.proximo
 	}
 	fmt.Println("nil")
+}
 
-	v, ok := minhaLista.valorNaPosicao(2)
-	if ok {
-		fmt.Println("o valor na posicao 2 eh o:", v)
-	}
+func main() {
+	minhaLista := lista{}
+	var op int
 
-	v2, ok2 := minhaLista.valorNaPosicao(10)
-	if !ok2 {
-		fmt.Println("buscou a posicao 10 e n achou nada")
+	for {
+		fmt.Println("\n--- MENU DA LISTA ---")
+		fmt.Println("1 - Adicionar inicio")
+		fmt.Println("2 - Adicionar fim")
+		fmt.Println("3 - Adicionar posicao")
+		fmt.Println("4 - Remover inicio")
+		fmt.Println("5 - Remover fim")
+		fmt.Println("6 - Remover posicao")
+		fmt.Println("7 - Buscar por valor")
+		fmt.Println("8 - Buscar por posicao")
+		fmt.Println("9 - Tamanho")
+		fmt.Println("10 - Imprimir lista")
+		fmt.Println("0 - Sair")
+		fmt.Print("Escolha: ")
+		fmt.Scan(&op)
+
+		if op == 0 {
+			break
+		}
+
+		switch op {
+		case 1:
+			var v int
+			fmt.Print("Valor: ")
+			fmt.Scan(&v)
+			minhaLista.adicionarInicio(v)
+		case 2:
+			var v int
+			fmt.Print("Valor: ")
+			fmt.Scan(&v)
+			minhaLista.adicionarFim(v)
+		case 3:
+			var v, p int
+			fmt.Print("Valor e posicao: ")
+			fmt.Scan(&v, &p)
+			ok := minhaLista.adicionarPosicao(v, p)
+			if !ok {
+				fmt.Println("erro ao add, posicao invalida")
+			}
+		case 4:
+			v, ok := minhaLista.removerInicio()
+			if ok {
+				fmt.Println("removeu", v)
+			} else {
+				fmt.Println("lista vazia")
+			}
+		case 5:
+			v, ok := minhaLista.removerFim()
+			if ok {
+				fmt.Println("removeu o", v)
+			} else {
+				fmt.Println("deu ruim, lista vazia")
+			}
+		case 6:
+			var p int
+			fmt.Print("Qual posicao remover: ")
+			fmt.Scan(&p)
+			v, ok := minhaLista.removerPosicao(p)
+			if ok {
+				fmt.Println("tirou o", v)
+			} else {
+				fmt.Println("posicao n existe")
+			}
+		case 7:
+			var v int
+			fmt.Print("Procurar qual numero: ")
+			fmt.Scan(&v)
+			p, ok := minhaLista.posicao(v)
+			if ok {
+				fmt.Println("ta na posicao", p)
+			} else {
+				fmt.Println("nao achei")
+			}
+		case 8:
+			var p int
+			fmt.Print("Ver qual posicao: ")
+			fmt.Scan(&p)
+			v, ok := minhaLista.valorNaPosicao(p)
+			if ok {
+				fmt.Println("valor eh", v)
+			} else {
+				fmt.Println("posicao invalida")
+			}
+		case 9:
+			fmt.Println("tamanho da lista:", minhaLista.tamanho())
+		case 10:
+			minhaLista.imprimir()
+		default:
+			fmt.Println("opcao errada vei")
+		}
 	}
 }
