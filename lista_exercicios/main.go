@@ -84,15 +84,40 @@ func (l *lista) removerFim() (int, bool) {
 	return rem, true
 }
 
+func (l *lista) removerPosicao(pos int) (int, bool) {
+	if pos < 0 || l.inicio == nil {
+		return 0, false
+	}
+	if pos == 0 {
+		return l.removerInicio()
+	}
+	
+	atual := l.inicio
+	contador := 0
+	for atual != nil && contador < pos-1 {
+		atual = atual.proximo
+		contador++
+	}
+	
+	if atual == nil || atual.proximo == nil {
+		return 0, false
+	}
+	
+	removido := atual.proximo.valor
+	atual.proximo = atual.proximo.proximo
+	return removido, true
+}
+
 func main() {
 	minhaLista := lista{}
 
-	minhaLista.adicionarInicio(10)
+	minhaLista.adicionarFim(10)
 	minhaLista.adicionarFim(20)
 	minhaLista.adicionarFim(30)
-	minhaLista.adicionarInicio(5)
+	minhaLista.adicionarFim(40)
+	minhaLista.adicionarFim(50)
 
-	fmt.Println("lista antes de remover:")
+	fmt.Println("lista atual:")
 	atual := minhaLista.inicio
 	for atual != nil {
 		fmt.Print(atual.valor, " -> ")
@@ -100,28 +125,21 @@ func main() {
 	}
 	fmt.Println("nil")
 
-	v, ok := minhaLista.removerInicio()
+	v, ok := minhaLista.removerPosicao(2)
 	if ok {
-		fmt.Println("removeu do inicio o:", v)
+		fmt.Println("removeu da posicao 2 o:", v)
 	}
 
-	v2, ok2 := minhaLista.removerFim()
-	if ok2 {
-		fmt.Println("removeu do fim o:", v2)
+	v2, ok2 := minhaLista.removerPosicao(99)
+	if !ok2 {
+		fmt.Println("deu erro pra remover posicao 99 como esperado")
 	}
 
-	fmt.Println("lista depois das remocoes:")
+	fmt.Println("lista depois de tirar o index 2:")
 	atual = minhaLista.inicio
 	for atual != nil {
 		fmt.Print(atual.valor, " -> ")
 		atual = atual.proximo
 	}
 	fmt.Println("nil")
-	
-	// Testando remover de uma lista vazia
-	listaVazia := lista{}
-	_, ok3 := listaVazia.removerInicio()
-	if !ok3 {
-		fmt.Println("tentou remover inicio da lista vazia e retornou false certinho")
-	}
 }
