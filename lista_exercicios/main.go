@@ -108,6 +108,19 @@ func (l *lista) removerPosicao(pos int) (int, bool) {
 	return removido, true
 }
 
+func (l *lista) posicao(valorProcurado int) (int, bool) {
+	atual := l.inicio
+	pos := 0
+	for atual != nil {
+		if atual.valor == valorProcurado {
+			return pos, true
+		}
+		atual = atual.proximo
+		pos++
+	}
+	return 0, false
+}
+
 func main() {
 	minhaLista := lista{}
 
@@ -115,7 +128,6 @@ func main() {
 	minhaLista.adicionarFim(20)
 	minhaLista.adicionarFim(30)
 	minhaLista.adicionarFim(40)
-	minhaLista.adicionarFim(50)
 
 	fmt.Println("lista atual:")
 	atual := minhaLista.inicio
@@ -125,21 +137,13 @@ func main() {
 	}
 	fmt.Println("nil")
 
-	v, ok := minhaLista.removerPosicao(2)
+	p, ok := minhaLista.posicao(30)
 	if ok {
-		fmt.Println("removeu da posicao 2 o:", v)
+		fmt.Println("achou o 30 na posicao:", p)
 	}
 
-	v2, ok2 := minhaLista.removerPosicao(99)
+	p2, ok2 := minhaLista.posicao(99)
 	if !ok2 {
-		fmt.Println("deu erro pra remover posicao 99 como esperado")
+		fmt.Println("buscou o 99 e retornou false certinho")
 	}
-
-	fmt.Println("lista depois de tirar o index 2:")
-	atual = minhaLista.inicio
-	for atual != nil {
-		fmt.Print(atual.valor, " -> ")
-		atual = atual.proximo
-	}
-	fmt.Println("nil")
 }
