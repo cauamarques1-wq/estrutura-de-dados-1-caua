@@ -121,6 +121,22 @@ func (l *lista) posicao(valorProcurado int) (int, bool) {
 	return 0, false
 }
 
+func (l *lista) valorNaPosicao(posicaoProcurada int) (int, bool) {
+	if posicaoProcurada < 0 {
+		return 0, false
+	}
+	atual := l.inicio
+	pos := 0
+	for atual != nil {
+		if pos == posicaoProcurada {
+			return atual.valor, true
+		}
+		atual = atual.proximo
+		pos++
+	}
+	return 0, false
+}
+
 func main() {
 	minhaLista := lista{}
 
@@ -137,13 +153,13 @@ func main() {
 	}
 	fmt.Println("nil")
 
-	p, ok := minhaLista.posicao(30)
+	v, ok := minhaLista.valorNaPosicao(2)
 	if ok {
-		fmt.Println("achou o 30 na posicao:", p)
+		fmt.Println("o valor na posicao 2 eh o:", v)
 	}
 
-	p2, ok2 := minhaLista.posicao(99)
+	v2, ok2 := minhaLista.valorNaPosicao(10)
 	if !ok2 {
-		fmt.Println("buscou o 99 e retornou false certinho")
+		fmt.Println("buscou a posicao 10 e n achou nada")
 	}
 }
